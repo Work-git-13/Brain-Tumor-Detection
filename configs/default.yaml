@@ -1,0 +1,45 @@
+project:
+  name: brain-mri-tumor-detection
+  seed: 42
+  device: auto
+
+data:
+  dataset_root: data/raw/brain-tumor-mri
+  prepared_root: data/processed/brain-tumor-mri
+  split_names:
+    train: Train
+    val: Val
+    test: Test
+  image_size: 512
+  num_workers: 0
+  batch_size: 8
+  class_names:
+    - Glioma
+    - Meningioma
+    - No Tumor
+    - Pituitary
+
+training:
+  epochs: 30
+  learning_rate: 0.0003
+  weight_decay: 0.0001
+  optimizer: adamw
+  mixed_precision: true
+  save_dir: results/logs
+
+evaluation:
+  iou_threshold: 0.5
+  score_threshold: 0.25
+
+models:
+  yolo:
+    weights: yolov8n.pt
+    imgsz: 512
+  faster_rcnn:
+    backbone: resnet50_fpn_v2
+  ssd:
+    backbone: ssd300_vgg16
+  efficientdet:
+    variant: tf_efficientdet_d0
+  detr:
+    checkpoint: facebook/detr-resnet-50
